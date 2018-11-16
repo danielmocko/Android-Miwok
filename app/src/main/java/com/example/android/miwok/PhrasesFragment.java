@@ -1,21 +1,34 @@
 package com.example.android.miwok;
 
+
 import android.media.MediaPlayer;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
 
-public class PhrasesActivity extends AppCompatActivity {
+/**
+ * A simple {@link Fragment} subclass.
+ */
+public class PhrasesFragment extends Fragment {
     public MediaPlayer player;
+
+    public PhrasesFragment() {
+        // Required empty public constructor
+    }
+
+
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.word_list);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+
+        View rootView = inflater.inflate(R.layout.word_list,container,false);
 
         final ArrayList<Word> words = new ArrayList<>();
         words.add(new Word("Where are you going?","minto wuksus",R.raw.phrase_where_are_you_going));
@@ -29,15 +42,15 @@ public class PhrasesActivity extends AppCompatActivity {
         words.add(new Word("Let’s go.","yoowutis",R.raw.phrase_lets_go));
         words.add(new Word("Come here." ,"әnni'nem",R.raw.phrase_come_here));
 
-        WordAdapter wordAdapter = new WordAdapter(this,words,R.color.category_phrases);
-        ListView listView = (ListView)findViewById(R.id.list);
+        WordAdapter wordAdapter = new WordAdapter(getActivity(),words,R.color.category_phrases);
+        ListView listView = (ListView)rootView.findViewById(R.id.list);
         listView.setAdapter(wordAdapter);
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
                 Word word = words.get(position);
-                player = MediaPlayer.create(PhrasesActivity.this,word.getAudioResourcesID());
+                player = MediaPlayer.create(getActivity(),word.getAudioResourcesID());
                 player.start();
                 player.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
                     @Override
@@ -45,15 +58,16 @@ public class PhrasesActivity extends AppCompatActivity {
                         player.release();
                     }
                 });
-                Toast.makeText(PhrasesActivity.this,"List item clicked",Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(),"List item clicked",Toast.LENGTH_SHORT).show();
             }
         });
+        return rootView;
     }
 
     @Override
-    protected void onStop() {
+    public void onStop() {
         super.onStop();
         if(player!=null)
-        player.release();
+            player.release();
     }
 }

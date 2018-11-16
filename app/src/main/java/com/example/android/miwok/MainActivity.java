@@ -19,6 +19,8 @@ import android.content.Intent;
 import android.location.GpsStatus;
 import android.media.MediaPlayer;
 import android.os.Bundle;
+import android.support.design.widget.TabLayout;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.TextView;
@@ -28,53 +30,15 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        // Set the content of the activity to use the activity_main.xml layout file
         setContentView(R.layout.activity_main);
 
+        ViewPager viewPager = (ViewPager) findViewById(R.id.viewPager);
+        CategoryAdapter adapter = new CategoryAdapter(this,getSupportFragmentManager());
+        viewPager.setAdapter(adapter);
+
+        TabLayout tabLayout=(TabLayout)findViewById(R.id.tabLayout);
+        tabLayout.setupWithViewPager(viewPager);
 
 
-
-        TextView numberTextView = (TextView)findViewById(R.id.numbers);
-        numberTextView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent numberList = new Intent(MainActivity.this,NumbersActivity.class);
-                startActivity(numberList);
-            }
-        });
-
-        TextView familyTextView = (TextView)findViewById(R.id.family);
-        familyTextView.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View view){
-                Intent familyIntent = new Intent(MainActivity.this,FamilyActivity.class);
-                startActivity(familyIntent);
-            }
-        });
-
-        TextView colorsTextView = (TextView)findViewById(R.id.colors);
-        colorsTextView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent colorsIntent = new Intent(MainActivity.this,ColorsActivity.class);
-                startActivity(colorsIntent);
-            }
-        });
-
-        TextView phrasesTextView = (TextView)findViewById(R.id.phrases);
-        phrasesTextView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent phrasesIntent = new Intent(MainActivity.this,PhrasesActivity.class);
-                startActivity(phrasesIntent);
-            }
-        });
     }
-
-
-
-
-
-
 }
